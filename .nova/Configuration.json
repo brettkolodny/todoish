@@ -1,0 +1,5 @@
+{
+  "co.gwil.deno.config.enableLsp" : "false",
+  "co.gwil.deno.config.enableUnstable" : "false",
+  "co.gwil.deno.config.formatOnSave" : "false"
+}

@@ -44,7 +44,11 @@ defmodule Todoish.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:ash, github: "ash-project/ash", override: true, branch: "2.0"},
+      {:ash_phoenix, github: "ash-project/ash_phoenix", override: true, branch: "ash-2.0"},
+      {:elixir_sense, github: "elixir-lsp/elixir_sense", only: [:dev, :test]},
+      {:nanoid, "~> 2.0"}
     ]
   end
 

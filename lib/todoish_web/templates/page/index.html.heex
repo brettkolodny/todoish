@@ -1,4 +1,4 @@
-<section class="flex justify-center items-center w-screen">
+<section class="flex flex-col justify-center items-center gap-8 w-screen">
   <div class="flex flex-col justify-center items-center gap-2">
     <h1 class="flex flex-row justify-start items-center">
         <div class="font-bold text-6xl text-base-900">Todoish</div>
@@ -6,6 +6,13 @@
     </h1>
     <h2 class="text-lg">Share todos, grocery lists, or anything else!</h2>
   </div>
-  <div>
+  <div class="flex flex-col justify-center items-center w-full max-w-lg bg-white p-16 rounded-lg border border-base-300">
+    <%= form_for @conn, Routes.page_path(@conn, :new),
+      [as: :new_list, class: ["flex flex-col gap-16 w-full"]],
+      fn f ->
+    %>
+      <%= text_input f, :title, [placeholder: "My awesome list!", class: ["w-full h-12 rounded-md bg-base-100"]] %>
+      <%= submit "Create a Todoish!", [class: ["bg-primary-400 text-white h-12 text-lg rounded-md hover:bg-primary-500 transition-colors"]] %>
+    <% end %>
   </div>
 </section>

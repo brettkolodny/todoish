@@ -18,6 +18,10 @@ defmodule TodoishWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    post "/", PageController, :new
+
+    live "/:url_id", Live.List
   end
 
   # Other scopes may use custom stacks.
