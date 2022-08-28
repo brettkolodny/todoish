@@ -7,6 +7,8 @@
     <meta name="csrf-token" content={csrf_token_value()}>
     <%= live_title_tag assigns[:page_title] || "Todoish", suffix: " · A sharable list!" %>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✅</text></svg>">
+
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
   <body class="bg-base-50">
