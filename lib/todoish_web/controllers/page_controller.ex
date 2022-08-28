@@ -3,7 +3,10 @@ defmodule TodoishWeb.PageController do
 
   require Ash.Query
 
-  defp create_new_list(title) do
+  defp create_new_list(title, description) do
+    title = if title != "" do title else "A Todoish list" end
+    description = if description != "" do description else "Add items to get started!" end
+
     url_id = Nanoid.generate()
 
     lists = Todoish.Entries.List
@@ -14,10 +17,10 @@ defmodule TodoishWeb.PageController do
 
     if (lists != nil) do
       # On the off chance the id exists, try again
-      create_new_list(title)
+      create_new_list(title, description)
     else
       Todoish.Entries.List
-      |> Ash.Changeset.for_create(:new, %{title: title, url_id: url_id})
+      |> Ash.Changeset.for_create(:new, %{title: title, url_id: url_id, description: description})
       |> Todoish.Entries.create!()
 
       url_id
@@ -28,8 +31,10 @@ defmodule TodoishWeb.PageController do
     render(conn, "index.html")
   end
 
-  def new(conn, %{"new_list" => %{"title" => title}}) do
-    url_id = create_new_list(title) |> IO.inspect()
+  def new(conn, %{"new_list" => %{"title" => title, "description" => description}}) do
+
+    IO.inspect(description)
+    url_id = create_new_list(title, description)
 
     redirect(conn, to: "/#{url_id}")
   end

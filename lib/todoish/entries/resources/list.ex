@@ -5,7 +5,7 @@ defmodule Todoish.Entries.List do
 		defaults [:create, :read, :update, :destroy]
 
 		create :new do
-			accept [:title, :url_id]
+			accept [:title, :url_id, :description]
 		end
 	end
 
@@ -13,12 +13,21 @@ defmodule Todoish.Entries.List do
 		uuid_primary_key :id
 
 		attribute :title, :string do
+			default "A Todoish List"
+
+			allow_nil? false
+		end
+
+		attribute :description, :string do
+			default "Add items to get started!"
+
 			allow_nil? false
 		end
 
 		attribute :url_id, :string do
 			allow_nil? false
 		end
+
 	end
 
 	relationships do
