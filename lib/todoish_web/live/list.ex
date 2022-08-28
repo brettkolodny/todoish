@@ -7,16 +7,16 @@ defmodule TodoishWeb.Live.List do
   def render(assigns) do
 		~L"""
 		<div class="flex flex-col justify-center items-center gap-8 w-screen">
-			<div class="flex flex-col justify-center items-center gap-2">
+			<div class="flex flex-col justify-center items-center gap-1 md:gap-2">
 				<h1 class="flex flex-row justify-start items-center">
-						<div class="font-bold text-6xl text-base-900"><%= @list.title %></div>
-						<div class="text-2xl transform -translate-y-2">✅</div>
+						<div class="font-bold text-3xl md:text-6xl text-base-900"><%= @list.title %></div>
+						<div class="text-base md:text-2xl transform -translate-y-2">✅</div>
 				</h1>
 				<h2 class="text-lg">
 					<%= @list.description %>
 				</h2>
 			</div>
-			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-lg bg-white px-16 pt-16 pb-8 rounded-lg border border-base-300">
+			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-xs md:max-w-lg bg-white px-6 md:px-16 pt-6 md:pt-16 pb-3 md:pb-8 rounded-lg border border-base-300">
 				<%= for item <- Enum.reverse(@list.items) do %>
 					<div class="flex flex-row justify-center items-center gap-2 w-full">
 						<div class="flex justify-start items-center w-full h-12 pl-4 rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
@@ -60,6 +60,7 @@ defmodule TodoishWeb.Live.List do
 			socket = socket
 				|> assign(:list, list)
 				|> assign(:form, form)
+				|> assign(:page_title, list.title)
 
 			{:ok, socket}
 		else
