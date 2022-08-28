@@ -45,7 +45,7 @@ defmodule TodoishWeb.Live.List do
 		list = Todoish.Entries.List
 	  	|> Ash.Query.filter(url_id == ^url_id)
 	  	|> Ash.Query.limit(1)
-	  	|> Ash.Query.select([:title, :items, :id, :url_id, :description])
+	  	|> Ash.Query.select([:title, :id, :url_id, :description])
 			|> Ash.Query.load([:items])
 	  	|> Todoish.Entries.read_one!()
 
@@ -112,8 +112,6 @@ defmodule TodoishWeb.Live.List do
 	end
 
 	def handle_event("share", _value, socket) do
-		IO.puts("share!")
-
 		{:noreply, push_event(socket, "share", %{})}
 	end
 
