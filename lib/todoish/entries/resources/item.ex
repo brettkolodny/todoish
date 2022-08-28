@@ -17,6 +17,18 @@ defmodule Todoish.Entries.Item do
 
 			change manage_relationship(:list_id, :list, type: :replace)
 		end
+
+		update :complete do
+			accept []
+
+			change set_attribute(:status, :completed)
+		end
+
+		update :incomplete do
+			accept []
+
+			change set_attribute(:status, :incompleted)
+		end
 	end
 
 	attributes do
@@ -24,16 +36,14 @@ defmodule Todoish.Entries.Item do
 
 		timestamps()
 
-		attribute :description, :string
-
 		attribute :title, :string do
 			allow_nil? false
 		end
 
 		attribute :status, :atom do
-			constraints [one_of: [:open, :closed]]
+			constraints [one_of: [:completed, :incompleted]]
 
-			default :open
+			default :incompleted
 
 			allow_nil? false
 		end
@@ -45,6 +55,8 @@ defmodule Todoish.Entries.Item do
 		broadcast_type :phoenix_broadcast
 
 		publish :add, ["list", :list_id], event: "item-added"
+		publish :complete, ["list", :list_id], event: "item-updated"
+		publish :incomplete, ["list", :list_id], event: "item-updated"
 	end
 
 	relationships do
