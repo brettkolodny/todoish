@@ -11,7 +11,7 @@
 
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
-  <body class="bg-base-50">
+  <body class="flex flex-col bg-base-50 min-h-screen">
     <header class="flex justify-center items-center w-screen">
       <section class="w-full max-w-xs md:max-w-5xl py-4">
         <a href="/" class="flex flex-row justify-start items-center">
@@ -21,8 +21,8 @@
       </section>
     </header>
     <%= @inner_content %>
-    <div class="flex flex-row justify-center items-center w-screen">
-      <div class="fixed bottom-0 flex flex-row justify-center items-center gap-4 w-full max-w-xs md:max-w-5xl py-4">
+    <div class="mt-auto h-full flex flex-row justify-center items-center w-screen">
+      <div class="flex flex-row justify-center items-center gap-4 w-full max-w-xs md:max-w-5xl py-4">
         <div>
           <span>Built with&nbsp;</span>
           <a href="https://elixir-lang.org/" target="_blank">⚗️</a>
