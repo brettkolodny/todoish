@@ -15,13 +15,13 @@ defmodule Todoish.Entries.List do
 		attribute :title, :string do
 			default "A Todoish List"
 
-			allow_nil? false
+			#allow_nil? false
 		end
 
 		attribute :description, :string do
 			default "Add items to get started!"
 
-			allow_nil? false
+			#allow_nil? false
 		end
 
 		attribute :url_id, :string do
