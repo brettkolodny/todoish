@@ -1,5 +1,5 @@
 %{
-  "ash": {:git, "https://github.com/ash-project/ash.git", "b659f6fd378f6d6a9a3987e5120bab8f48707a59", [branch: "2.0"]},
+  "ash": {:git, "https://github.com/ash-project/ash.git", "7930e3efa1c7447bf854054c28dcd4de94c7d93f", [branch: "2.0"]},
   "ash_phoenix": {:git, "https://github.com/ash-project/ash_phoenix.git", "b1516a5689838d550952b81405380f388607363c", [branch: "ash-2.0"]},
   "castore": {:hex, :castore, "0.1.18", "deb5b9ab02400561b6f5708f3e7660fc35ca2d51bfc6a940d2f513f89c2975fc", [:mix], [], "hexpm", "61bbaf6452b782ef80b33cdb45701afbcf0a918a45ebe7e73f1130d661e66a06"},
   "comparable": {:hex, :comparable, "1.0.0", "bb669e91cedd14ae9937053e5bcbc3c52bb2f22422611f43b6e38367d94a495f", [:mix], [{:typable, "~> 0.1", [hex: :typable, repo: "hexpm", optional: false]}], "hexpm", "277c11eeb1cd726e7cd41c6c199e7e52fa16ee6830b45ad4cdc62e51f62eb60c"},
