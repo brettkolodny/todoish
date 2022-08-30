@@ -48,7 +48,7 @@ defmodule TodoishWeb.Live.List do
 	  	|> Ash.Query.filter(url_id == ^url_id)
 	  	|> Ash.Query.limit(1)
 	  	|> Ash.Query.select([:title, :id, :url_id, :description])
-			|> Ash.Query.load([:items])
+			|> Ash.Query.load([items: Ash.Query.sort(Todoish.Entries.Item, inserted_at: :desc)])
 	  	|> Todoish.Entries.read_one!()
 
 		if list != nil do
