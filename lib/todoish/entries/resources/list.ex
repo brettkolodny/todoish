@@ -28,6 +28,10 @@ defmodule Todoish.Entries.List do
 			allow_nil? false
 		end
 
+		identities do
+			identity :unique_url_id, [:url_id], pre_check_with: Todoish.Entries
+		end
+
 	end
 
 	relationships do

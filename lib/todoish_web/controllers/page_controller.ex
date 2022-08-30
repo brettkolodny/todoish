@@ -9,22 +9,11 @@ defmodule TodoishWeb.PageController do
 
     url_id = Nanoid.generate()
 
-    lists = Todoish.Entries.List
-      |> Ash.Query.filter(url_id == ^url_id)
-      |> Ash.Query.limit(1)
-      |> Ash.Query.select([])
-      |> Todoish.Entries.read_one!()
+    Todoish.Entries.List
+    |> Ash.Changeset.for_create(:new, %{title: title, url_id: url_id, description: description})
+    |> Todoish.Entries.create!()
 
-    if (lists != nil) do
-      # On the off chance the id exists, try again
-      create_new_list(title, description)
-    else
-      Todoish.Entries.List
-      |> Ash.Changeset.for_create(:new, %{title: title, url_id: url_id, description: description})
-      |> Todoish.Entries.create!()
-
-      url_id
-    end
+    url_id
   end
 
   def index(conn, _params) do
@@ -32,8 +21,6 @@ defmodule TodoishWeb.PageController do
   end
 
   def new(conn, %{"new_list" => %{"title" => title, "description" => description}}) do
-
-    IO.inspect(description)
     url_id = create_new_list(title, description)
 
     redirect(conn, to: "/#{url_id}")
