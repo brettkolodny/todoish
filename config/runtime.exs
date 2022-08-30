@@ -56,6 +56,8 @@ if config_env() == :prod do
       """
 
   config :todoish, Todoish.Repo,
+    ssl: false,
     url: database_url,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: [:inet6]
 end
