@@ -16,13 +16,14 @@ defmodule TodoishWeb.Live.List do
 					<%= @list.description %>
 				</h2>
 			</div>
-			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-xs md:max-w-lg bg-white px-6 md:px-16 pt-6 md:pt-16 pb-6 md:pb-8 rounded-lg border border-base-300">
+			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-xs md:max-w-lg bg-white px-4 md:px-12 pt-6 md:pt-16 pb-6 md:pb-8 rounded-lg border border-base-300">
 				<%= for item <- Enum.reverse(@list.items) do %>
 					<div class="flex flex-row justify-center items-center gap-2 w-full">
+						<div class="w-6 cursor-pointer" phx-click="delete" phx-value-id="<%= item.id %>">🗑️</div>
 						<div class="flex justify-start items-center w-full h-12 pl-4 rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
 							<%= item.title %>
 						</div>
-						<div class="text-xl cursor-pointer" phx-click="done" phx-value-id="<%= item.id %>">
+						<div class="w-6 text-xl cursor-pointer" phx-click="done" phx-value-id="<%= item.id %>">
 							<%= if item.status == :incompleted do %>
 								✅
 							<% else %>
@@ -32,8 +33,9 @@ defmodule TodoishWeb.Live.List do
 					</div>
 				<% end %>
 				<%= f = form_for @form, "#", [phx_submit: :save, class: "flex flex-row w-full gap-2 mb-8"] %>
+					<div class="flex justify-center items-center w-6"></div>
 					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-full h-12 rounded-md bg-base-100"]] %>
-					<%= submit "➕", [class: ["text-xl"]] %>
+					<%= submit "➕", [class: ["w-6 text-xl"]] %>
 				</form>
 				<div phx-click="share" id="share-button" class="flex justify-center items-center w-full bg-primary-400 text-white h-12 text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
 			</div>
@@ -111,6 +113,24 @@ defmodule TodoishWeb.Live.List do
 		end
 	end
 
+	def handle_event("delete", %{"id" => id}, socket) do
+		list = socket.assigns.list
+
+		item = Enum.find(list.items, &(&1.id == id))
+
+		if item != nil do
+			item
+			|> Ash.Changeset.for_destroy(:destroy)
+			|> Todoish.Entries.destroy!()
+
+			items = List.delete(list.items, item)
+
+			list = %{list | items: items}
+
+			{:noreply, assign(socket, :list, list)}
+		end
+	end
+
 	def handle_event("share", _value, socket) do
 		{:noreply, push_event(socket, "share", %{})}
 	end
@@ -141,6 +161,23 @@ defmodule TodoishWeb.Live.List do
 
 		if item_index != nil do
 			items = List.replace_at(items, item_index, updated_item)
+			list = %{socket.assigns.list | items: items}
+
+			{:noreply, assign(socket, :list, list)}
+		else
+			{:noreply, socket}
+		end
+	end
+
+	def handle_info(%{event: "item-deleted", payload: payload}, socket) do
+		deleted_item = payload.payload.data
+
+		items = socket.assigns.list.items
+
+		item = Enum.find(items, &(&1.id == deleted_item.id))
+
+		if item != nil do
+			items = List.delete(items, item)
 			list = %{socket.assigns.list | items: items}
 
 			{:noreply, assign(socket, :list, list)}

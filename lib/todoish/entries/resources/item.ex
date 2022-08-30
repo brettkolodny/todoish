@@ -57,6 +57,7 @@ defmodule Todoish.Entries.Item do
 		publish :add, ["list", :list_id], event: "item-added"
 		publish :complete, ["list", :list_id], event: "item-updated"
 		publish :incomplete, ["list", :list_id], event: "item-updated"
+		publish :destroy, ["list", :list_id], event: "item-deleted"
 	end
 
 	relationships do
