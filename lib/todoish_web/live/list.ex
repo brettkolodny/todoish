@@ -12,15 +12,15 @@ defmodule TodoishWeb.Live.List do
 						<div class="font-bold text-3xl md:text-6xl text-base-900"><%= @list.title %></div>
 						<div class="text-base md:text-2xl transform -translate-y-2">✅</div>
 				</h1>
-				<h2 class="text-lg">
+				<h2 class="text-lg text-center">
 					<%= @list.description %>
 				</h2>
 			</div>
-			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-xs md:max-w-lg bg-white px-4 md:px-12 pt-6 md:pt-16 pb-6 md:pb-8 rounded-lg border border-base-300">
+			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-xs md:max-w-lg bg-white px-4 md:px-8 py-6 md:py-10 rounded-lg border border-base-300">
 				<%= for item <- Enum.reverse(@list.items) do %>
 					<div class="flex flex-row justify-center items-center gap-2 w-full">
 						<div class="w-6 cursor-pointer" phx-click="delete" phx-value-id="<%= item.id %>">🗑️</div>
-						<div class="flex justify-start items-center w-full h-12 pl-4 rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
+						<div class="flex justify-start items-center w-60 md:w-96 h-12 pl-4 text-sm md:text-base rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
 							<%= item.title %>
 						</div>
 						<div class="w-6 text-xl cursor-pointer" phx-click="done" phx-value-id="<%= item.id %>">
@@ -32,12 +32,12 @@ defmodule TodoishWeb.Live.List do
 						</div>
 					</div>
 				<% end %>
-				<%= f = form_for @form, "#", [phx_submit: :save, class: "flex flex-row w-full gap-2 mb-8"] %>
+				<%= f = form_for @form, "#", [phx_submit: :save, class: "flex flex-row justify-center w-full gap-2 mb-8"] %>
 					<div class="flex justify-center items-center w-6"></div>
-					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-full h-12 rounded-md bg-base-100"]] %>
+					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-60 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
 					<%= submit "➕", [class: ["w-6 text-xl"]] %>
 				</form>
-				<div phx-click="share" id="share-button" class="flex justify-center items-center w-full bg-primary-400 text-white h-12 text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
+				<div phx-click="share" id="share-button" class="flex justify-center items-center w-60 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
 			</div>
 		</div>
 		"""
