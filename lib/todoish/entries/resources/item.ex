@@ -1,5 +1,10 @@
 defmodule Todoish.Entries.Item do
-	use Ash.Resource, data_layer: Ash.DataLayer.Ets, notifiers: [Ash.Notifier.PubSub]
+	use Ash.Resource, data_layer: AshPostgres.DataLayer, notifiers: [Ash.Notifier.PubSub]
+
+	postgres do
+		table "items"
+		repo Todoish.Repo
+	end
 
 	actions do
 		defaults [:create, :read, :update, :destroy]
