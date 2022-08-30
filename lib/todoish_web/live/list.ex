@@ -20,7 +20,7 @@ defmodule TodoishWeb.Live.List do
 				<%= for item <- Enum.reverse(@list.items) do %>
 					<div class="flex flex-row justify-center items-center gap-2 w-full">
 						<div class="w-6 cursor-pointer text-xl text-center" phx-click="delete" phx-value-id="<%= item.id %>">🗑️</div>
-						<div class="flex justify-start items-center w-60 md:w-96 h-12 pl-4 text-sm md:text-base rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
+						<div class="flex justify-start items-center w-56 md:w-96 min-h-min py-3 pl-4 text-sm md:text-base rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
 							<%= item.title %>
 						</div>
 						<div class="w-6 text-xl text-center cursor-pointer" phx-click="done" phx-value-id="<%= item.id %>">
@@ -34,10 +34,10 @@ defmodule TodoishWeb.Live.List do
 				<% end %>
 				<%= f = form_for @form, "#", [phx_submit: :save, class: "flex flex-row justify-center w-full gap-2 mb-8"] %>
 					<div class="flex justify-center items-center w-6"></div>
-					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-60 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
+					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
 					<%= submit "➕", [class: ["w-6 text-xl"]] %>
 				</form>
-				<div phx-click="share" id="share-button" class="flex justify-center items-center w-60 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
+				<div phx-click="share" id="share-button" class="flex justify-center items-center w-56 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
 			</div>
 		</div>
 		"""
