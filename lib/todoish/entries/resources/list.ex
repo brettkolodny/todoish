@@ -1,5 +1,10 @@
 defmodule Todoish.Entries.List do
-	use Ash.Resource, data_layer: Ash.DataLayer.Ets
+	use Ash.Resource, data_layer: AshPostgres.DataLayer
+
+	postgres do
+		table "lists"
+		repo Todoish.Repo
+	end
 
 	actions do
 		defaults [:create, :read, :update, :destroy]

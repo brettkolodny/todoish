@@ -13,9 +13,10 @@ defmodule Todoish.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Todoish.PubSub},
       # Start the Endpoint (http/https)
-      TodoishWeb.Endpoint
+      TodoishWeb.Endpoint,
       # Start a worker by calling: Todoish.Worker.start_link(arg)
       # {Todoish.Worker, arg}
+      Todoish.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
