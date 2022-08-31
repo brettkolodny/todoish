@@ -1,5 +1,5 @@
 defmodule Todoish.Entries.List do
-	use Ash.Resource, data_layer: AshPostgres.DataLayer
+	use Ash.Resource, data_layer: AshPostgres.DataLayer, notifiers: [Ash.Notifier.PubSub]
 
 	postgres do
 		table "lists"
@@ -16,6 +16,8 @@ defmodule Todoish.Entries.List do
 
 	attributes do
 		uuid_primary_key :id
+
+		timestamps()
 
 		attribute :title, :string do
 			default "A Todoish List"
@@ -37,6 +39,14 @@ defmodule Todoish.Entries.List do
 			identity :unique_url_id, [:url_id], pre_check_with: Todoish.Entries
 		end
 
+	end
+
+	pub_sub do
+		module TodoishWeb.Endpoint
+		prefix "list"
+		broadcast_type :notification
+
+		publish :new, ["created"], event: "new-list"
 	end
 
 	relationships do
