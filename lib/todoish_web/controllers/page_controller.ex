@@ -3,26 +3,42 @@ defmodule TodoishWeb.PageController do
 
   require Ash.Query
 
-  defp create_new_list(title, description) do
-    title = if title != "" do title else "A Todoish list" end
-    description = if description != "" do description else "Add items to get started!" end
-
-    url_id = Nanoid.generate()
-
-    Todoish.Entries.List
-    |> Ash.Changeset.for_create(:new, %{title: title, url_id: url_id, description: description})
-    |> Todoish.Entries.create!()
-
-    url_id
-  end
-
   def index(conn, _params) do
     render(conn, "index.html")
   end
 
-  def new(conn, %{"new_list" => %{"title" => title, "description" => description}}) do
-    url_id = create_new_list(title, description)
+  def new(conn, %{"new_list" => params}) do
+    Todoish.Entries.List
+    |> AshPhoenix.Form.for_create(:create,
+      api: Todoish.Entries,
+      transform_params: fn params, _ ->
+        params =
+          if params["title"] in ["", nil] do
+            Map.put(params, "title", "A Todoish List")
+          else
+            params
+          end
 
-    redirect(conn, to: "/#{url_id}")
+        params =
+          if params["description"] in ["", nil] do
+            Map.put(params, "description", "Add items to get started!")
+          else
+            params
+          end
+
+        Map.put(params, "url_id", Nanoid.generate())
+      end
+    )
+    |> AshPhoenix.Form.validate(params)
+    |> AshPhoenix.Form.submit()
+    |> case do
+      {:ok, result} ->
+        IO.inspect(result)
+        redirect(conn, to: "/#{result.url_id}")
+
+      {:error, form} ->
+        IO.inspect(form)
+        render(conn, "index.html", form: form)
+    end
   end
 end
