@@ -38,7 +38,10 @@ defmodule TodoishWeb.PageController do
 
       {:error, form} ->
         IO.inspect(form)
-        render(conn, "index.html", form: form)
+
+        conn
+        |> put_flash(:error, "Uh-oh! Something went wrong. Please try again!")
+        |> render("index.html", form: form)
     end
   end
 end

@@ -13,6 +13,7 @@
     %>
       <%= text_input f, :title, [placeholder: "My awesome list!", class: ["w-full h-12 rounded-md bg-base-100"]] %>
       <%= textarea f, :description, [placeholder: "My awesome list's description!", class: ["w-full h-24 rounded-md bg-base-100 mb-4"]] %>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= submit "Create a Todoish!", [class: ["bg-primary-400 text-white h-12 text-lg rounded-md hover:bg-primary-500 transition-colors"]] %>
     <% end %>
   </div>
