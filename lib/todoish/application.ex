@@ -16,7 +16,8 @@ defmodule Todoish.Application do
       TodoishWeb.Endpoint,
       # Start a worker by calling: Todoish.Worker.start_link(arg)
       # {Todoish.Worker, arg}
-      Todoish.Repo
+      Todoish.Repo,
+      {Todoish.EntriesServer, name: :entries_server}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
