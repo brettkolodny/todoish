@@ -33,9 +33,9 @@ defmodule TodoishWeb.Live.List do
 					</div>
 				<% end %>
 				<%= f = form_for @form, "#", [phx_submit: :save, phx_change: :validate, class: "flex flex-row justify-center w-full gap-2"] %>
-					<div class="flex justify-center items-center w-6"></div>
-					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
 					<%= submit "➕", [class: ["w-6 text-xl"]] %>
+					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
+					<div class="flex justify-center items-center w-6"></div>
 				</form>
 				<div class="mb-8">
 					<%= if @error != nil do %>
