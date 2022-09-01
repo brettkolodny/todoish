@@ -32,14 +32,16 @@ defmodule TodoishWeb.Live.List do
 						</div>
 					</div>
 				<% end %>
-				<%= f = form_for @form, "#", [phx_submit: :save, class: "flex flex-row justify-center w-full gap-2 mb-8"] %>
+				<%= f = form_for @form, "#", [phx_submit: :save, phx_change: :validate, class: "flex flex-row justify-center w-full gap-2"] %>
 					<div class="flex justify-center items-center w-6"></div>
 					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
 					<%= submit "➕", [class: ["w-6 text-xl"]] %>
 				</form>
-				<%= if @error != nil do %>
-					<div><%= @error %></div>
-				<% end %>
+				<div class="mb-8">
+					<%= if @error != nil do %>
+						<div class="flex flex-row items-center w-56 md:w-96 h-12 px-4 md:px-6 rounded-md bg-red-200 text-sm md:text-base"><%= @error %></div>
+					<% end %>
+				</div>
 				<div phx-click="share" id="share-button" class="flex justify-center items-center w-56 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
 			</div>
 		</div>
@@ -75,7 +77,6 @@ defmodule TodoishWeb.Live.List do
   end
 
 	def handle_event("save", %{"form" => form}, socket) do
-
 		Todoish.Entries.Item
 		|> AshPhoenix.Form.for_create(:new,
 			api: Todoish.Entries,
@@ -97,7 +98,16 @@ defmodule TodoishWeb.Live.List do
 				socket = socket
 					|> assign(form: form)
 					|> assign(error: "Make sure to put something todo 👆")
-				{:noreply, assign(socket, form: form)}
+
+				{:noreply, socket}
+		end
+	end
+
+	def handle_event("validate", _form, socket) do
+		if socket.assigns.error != nil do
+			{:noreply, assign(socket, :error, nil)}
+		else
+			{:noreply, socket}
 		end
 	end
 
