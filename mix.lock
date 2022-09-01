@@ -1,7 +1,7 @@
 %{
-  "ash": {:git, "https://github.com/ash-project/ash.git", "7930e3efa1c7447bf854054c28dcd4de94c7d93f", [branch: "2.0"]},
-  "ash_phoenix": {:git, "https://github.com/ash-project/ash_phoenix.git", "b1516a5689838d550952b81405380f388607363c", [branch: "ash-2.0"]},
-  "ash_postgres": {:git, "https://github.com/ash-project/ash_postgres.git", "4eebc3a69c700b3a6cbc1e7cf4c32a9d7e0cb783", [branch: "ash-2.0"]},
+  "ash": {:git, "https://github.com/ash-project/ash.git", "5134673feddede07f8ca9ed8dcbbd630c7fb02ee", [branch: "main"]},
+  "ash_phoenix": {:git, "https://github.com/ash-project/ash_phoenix.git", "47fba7723776bc48380c384f1cc385b08c4f34a3", [branch: "main"]},
+  "ash_postgres": {:git, "https://github.com/ash-project/ash_postgres.git", "52ca0392b229444c230782b19e1710c162e908f2", [branch: "main"]},
   "castore": {:hex, :castore, "0.1.18", "deb5b9ab02400561b6f5708f3e7660fc35ca2d51bfc6a940d2f513f89c2975fc", [:mix], [], "hexpm", "61bbaf6452b782ef80b33cdb45701afbcf0a918a45ebe7e73f1130d661e66a06"},
   "comparable": {:hex, :comparable, "1.0.0", "bb669e91cedd14ae9937053e5bcbc3c52bb2f22422611f43b6e38367d94a495f", [:mix], [{:typable, "~> 0.1", [hex: :typable, repo: "hexpm", optional: false]}], "hexpm", "277c11eeb1cd726e7cd41c6c199e7e52fa16ee6830b45ad4cdc62e51f62eb60c"},
   "connection": {:hex, :connection, "1.1.0", "ff2a49c4b75b6fb3e674bfc5536451607270aac754ffd1bdfe175abe4a6d7a68", [:mix], [], "hexpm", "722c1eb0a418fbe91ba7bd59a47e28008a189d47e37e0e7bb85585a016b2869c"},

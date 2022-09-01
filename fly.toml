@@ -1,12 +1,12 @@
-# fly.toml file generated for todoish on 2022-08-28T13:59:13-04:00
+# fly.toml file generated for todoish on 2022-09-01T00:32:19-04:00
 
 app = "todoish"
 kill_signal = "SIGTERM"
 kill_timeout = 5
 processes = []
 
-[deploy]
-  release_command = "_build/prod/rel/todoish/bin/todoish eval 'Todoish.Release.migrate'"
+#[deploy]
+#  release_command = "_build/prod/rel/todoish/bin/todoish eval 'Todoish.Release.migrate'"
 
 [env]
   PHX_HOST = "todoish.fly.dev"
