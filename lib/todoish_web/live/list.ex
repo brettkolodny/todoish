@@ -19,10 +19,6 @@ defmodule TodoishWeb.Live.List do
 			<div class="flex flex-col justify-center items-center gap-4 w-full max-w-xs md:max-w-lg bg-white px-4 md:px-8 py-6 md:py-10 rounded-lg border border-base-300">
 				<%= for item <- Enum.reverse(@list.items) do %>
 					<div class="flex flex-row justify-center items-center gap-2 w-full">
-						<div class="w-6 cursor-pointer text-xl text-center" phx-click="delete" phx-value-id="<%= item.id %>">🗑️</div>
-						<div class="flex justify-start items-center w-56 md:w-96 min-h-min py-3 pl-4 text-sm md:text-base rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
-							<%= item.title %>
-						</div>
 						<div class="w-6 text-xl text-center cursor-pointer" phx-click="done" phx-value-id="<%= item.id %>">
 							<%= if item.status == :incompleted do %>
 								✅
@@ -30,6 +26,10 @@ defmodule TodoishWeb.Live.List do
 								🔁
 							<% end %>
 						</div>
+						<div class="flex justify-start items-center w-56 md:w-96 min-h-min py-3 pl-4 text-sm md:text-base rounded-md bg-base-50 border border-base-200 <%= if item.status == :completed, do: "opacity-30"%>">
+							<%= item.title %>
+						</div>
+						<div class="w-6 cursor-pointer text-xl text-center" phx-click="delete" phx-value-id="<%= item.id %>">🗑️</div>
 					</div>
 				<% end %>
 				<%= f = form_for @form, "#", [phx_submit: :save, phx_change: :validate, class: "flex flex-row justify-center w-full gap-2"] %>
@@ -39,7 +39,7 @@ defmodule TodoishWeb.Live.List do
 				</form>
 				<div class="mb-8">
 					<%= if @error != nil do %>
-						<div class="flex flex-row items-center w-56 md:w-96 h-12 px-4 md:px-6 rounded-md bg-red-100 text-sm md:text-base"><%= @error %></div>
+						<div class="flex flex-row items-center w-56 md:w-96 h-12 px-4 md:px-6 rounded-md bg-red-100 text-sm md:text-base text-red-600"><%= @error %></div>
 					<% end %>
 				</div>
 				<div phx-click="share" id="share-button" class="flex justify-center items-center w-56 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
