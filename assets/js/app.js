@@ -32,11 +32,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
 });
 
-window.addEventListener("phx:clear", (e) => {
-  const input = document.getElementById("new-todo");
-  input.value = "";
-});
-
 window.addEventListener("phx:share", (e) => {
   const element = document.getElementById("share-button");
 
