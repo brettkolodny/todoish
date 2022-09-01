@@ -11,10 +11,6 @@ defmodule Todoish.Entries.Item do
 
 		create :new do
 			accept [:title]
-		end
-
-		update :add do
-			accept []
 
 			argument :list_id, :uuid do
 				allow_nil? false
@@ -59,7 +55,7 @@ defmodule Todoish.Entries.Item do
 		prefix "item"
 		broadcast_type :phoenix_broadcast
 
-		publish :add, ["list", :list_id], event: "item-added"
+		publish :new, ["list", :list_id], event: "item-added"
 		publish :complete, ["list", :list_id], event: "item-updated"
 		publish :incomplete, ["list", :list_id], event: "item-updated"
 		publish :destroy, ["list", :list_id], event: "item-deleted"

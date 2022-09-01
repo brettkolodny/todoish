@@ -37,6 +37,9 @@ defmodule TodoishWeb.Live.List do
 					<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
 					<%= submit "➕", [class: ["w-6 text-xl"]] %>
 				</form>
+				<%= if @error != nil do %>
+					<div><%= @error %></div>
+				<% end %>
 				<div phx-click="share" id="share-button" class="flex justify-center items-center w-56 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
 			</div>
 		</div>
@@ -60,6 +63,7 @@ defmodule TodoishWeb.Live.List do
 			)
 
 			socket = socket
+				|> assign(:error, nil)
 				|> assign(:list, list)
 				|> assign(:form, form)
 				|> assign(:page_title, list.title)
@@ -70,22 +74,31 @@ defmodule TodoishWeb.Live.List do
 		end
   end
 
-	def handle_event("save", %{"form" => %{"title" => title}}, socket) do
-		list = socket.assigns.list
+	def handle_event("save", %{"form" => form}, socket) do
 
-		item = Todoish.Entries.Item
-			|> Ash.Changeset.for_create(:new, %{title: title})
-			|> Todoish.Entries.create!()
-			|> Ash.Changeset.for_update(:add, %{list_id: list.id})
-			|> Todoish.Entries.update!()
+		Todoish.Entries.Item
+		|> AshPhoenix.Form.for_create(:new,
+			api: Todoish.Entries,
+			prepare_params: fn params, _ ->
+				Map.put(params, "list_id", socket.assigns.list.id)
+			end
+		)
+		|> AshPhoenix.Form.validate(form)
+		|> AshPhoenix.Form.submit()
+		|> case do
+			{:ok, item} ->
+				items = socket.assigns.list.items
 
-		list = %{ list | items: [item | list.items]}
+				list = %{ socket.assigns.list | items: [item | items]}
 
-		socket = socket
-			|> assign(:list, list)
-			|> push_event("clear", %{})
+				{:noreply, assign(socket, :list ,list)}
 
-		{:noreply, socket}
+			{:error, form} ->
+				socket = socket
+					|> assign(form: form)
+					|> assign(error: "Make sure to put something todo 👆")
+				{:noreply, assign(socket, form: form)}
+		end
 	end
 
 	def handle_event("done", %{"id" => id}, socket) do
