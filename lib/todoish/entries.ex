@@ -1,7 +1,7 @@
 defmodule Todoish.Entries do
-	use Ash.Api
+  use Ash.Api
 
-	resources do
-		registry Todoish.Entries.Registry
-	end
+  resources do
+    registry Todoish.Entries.Registry
+  end
 end

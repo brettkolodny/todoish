@@ -3,7 +3,8 @@ defmodule Todoish.EntriesServer do
 
   require Ash.Query
 
-  @keep_alive 604_800_000 # 7 days
+  # 7 days
+  @keep_alive 604_800_000
 
   def start_link(_state) do
     GenServer.start_link(__MODULE__, %{})
@@ -13,11 +14,13 @@ defmodule Todoish.EntriesServer do
   def init(_state) do
     TodoishWeb.Endpoint.subscribe("list:created")
 
-    lists = Todoish.Entries.List
+    lists =
+      Todoish.Entries.List
       |> Ash.Query.select([:id, :inserted_at])
       |> Todoish.Entries.read!()
 
     now = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
+
     for list <- lists do
       inserted_at = DateTime.to_unix(list.inserted_at, :millisecond)
       delete_at = inserted_at + @keep_alive
@@ -42,11 +45,12 @@ defmodule Todoish.EntriesServer do
   defp delete_list_and_items(list, delay \\ 0) do
     :timer.sleep(delay)
 
-    list = Todoish.Entries.List
+    list =
+      Todoish.Entries.List
       |> Ash.Query.filter(id == ^list.id)
       |> Ash.Query.limit(1)
       |> Ash.Query.select([])
-      |> Ash.Query.load([items: Ash.Query.select(Todoish.Entries.Item, [:id])])
+      |> Ash.Query.load(items: Ash.Query.select(Todoish.Entries.Item, [:id]))
       |> Todoish.Entries.read_one!()
 
     for item <- list.items do
