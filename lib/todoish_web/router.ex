@@ -17,9 +17,7 @@ defmodule TodoishWeb.Router do
   scope "/", TodoishWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-
-    post "/", PageController, :new
+    live "/", Live.Home
 
     live "/:url_id", Live.List
   end
