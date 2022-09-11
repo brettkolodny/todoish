@@ -17,9 +17,10 @@ defmodule TodoishWeb.Router do
   scope "/", TodoishWeb do
     pipe_through :browser
 
-    live "/", Live.Home
-
-    live "/:url_id", Live.List
+    live_session :default, on_mount: [{TodoishWeb.InitAssigns, :default}] do
+      live "/", Live
+      live "/:url_id", Live
+    end
   end
 
   # Other scopes may use custom stacks.

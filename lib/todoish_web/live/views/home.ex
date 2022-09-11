@@ -1,8 +1,26 @@
 defmodule TodoishWeb.Live.Home do
-  use Phoenix.LiveView
+  use Phoenix.LiveComponent
   use Phoenix.HTML
 
-  def render(assigns) do
+  def render(%{platform: :ios} = assigns) do
+    ~H"""
+    <vstack>
+      <text font="largetitle" font-weight="bold">Todoish</text>
+      <text font="subheadline">Share todos, grocery lists, or anything else!</text>
+      <phx-form id="form" phx-submit="new-ios">
+        <vstack>
+          <textfield placeholder="My awesome list!" name="title"></textfield>
+          <textfield name="description" placeholder="My awesome list's description!"></textfield>
+          <phx-submit-button after-submit="clear">
+            <text>Create a Todoish!</text>
+          </phx-submit-button>
+        </vstack>
+      </phx-form>
+    </vstack>
+    """
+  end
+
+  def render(%{platform: :web} = assigns) do
     ~H"""
     <div class="flex flex-col justify-center items-center gap-4">
       <div class="flex flex-col justify-center items-center gap-1 md:gap-2">
@@ -24,44 +42,9 @@ defmodule TodoishWeb.Live.Home do
     """
   end
 
-  def mount(_params, _sessions, socket) do
+  def mount(socket) do
     form = AshPhoenix.Form.for_create(Todoish.Entries.List, :create)
 
     {:ok, assign(socket, :form, form)}
-  end
-
-  def handle_event("new", %{"form" => form}, socket) do
-    Todoish.Entries.List
-    |> AshPhoenix.Form.for_create(:create,
-      api: Todoish.Entries,
-      transform_params: fn params, _ ->
-        params =
-          if params["title"] in ["", nil] do
-            Map.put(params, "title", "A Todoish List")
-          else
-            params
-          end
-
-        params =
-          if params["description"] in ["", nil] do
-            Map.put(params, "description", "Add items to get started!")
-          else
-            params
-          end
-
-        Map.put(params, "url_id", Nanoid.generate())
-      end
-    )
-    |> AshPhoenix.Form.validate(form)
-    |> AshPhoenix.Form.submit()
-    |> case do
-      {:ok, result} ->
-        IO.inspect(result)
-        {:noreply, redirect(socket, to: "/#{result.url_id}")}
-
-      {:error, _form} ->
-        # TODO error flash
-        {:noreply, socket}
-    end
   end
 end
