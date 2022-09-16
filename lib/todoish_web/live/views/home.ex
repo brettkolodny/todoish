@@ -7,15 +7,24 @@ defmodule TodoishWeb.Live.Home do
     <vstack>
       <text font="largetitle" font-weight="bold">Todoish</text>
       <text font="subheadline">Share todos, grocery lists, or anything else!</text>
-      <phx-form id="form" phx-submit="new-ios">
-        <vstack>
-          <textfield placeholder="My awesome list!" name="title"></textfield>
-          <textfield name="description" placeholder="My awesome list's description!"></textfield>
-          <phx-submit-button after-submit="clear">
-            <text>Create a Todoish!</text>
+      <list-panel>
+        <phx-form id="form" phx-submit="new-ios">
+          <vstack>
+            <textfield placeholder="My awesome list!" name="title"></textfield>
+            <textfield name="description" placeholder="My awesome list's description!"></textfield>
+            <phx-submit-button after-submit="clear">
+              <text>Create a Todoish!</text>
+            </phx-submit-button>
+          </vstack>
+        </phx-form>
+        <text>Or</text>
+        <phx-form id="existing-list">
+          <textfield name="url_id" placeholder="Enter a list ID"></textfield>
+          <phx-submit-button>
+            <text>Go!</text>
           </phx-submit-button>
-        </vstack>
-      </phx-form>
+        </phx-form>
+      </list-panel>
     </vstack>
     """
   end

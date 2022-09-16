@@ -36,6 +36,10 @@ defmodule TodoishWeb.Live do
       {:ok, result} ->
         list = %{result | items: []}
 
+        IO.inspect(list.url_id)
+
+        TodoishWeb.Endpoint.subscribe("item:list:#{list.id}")
+
         socket =
           socket
           |> assign(:url_id, list.url_id)
@@ -53,6 +57,8 @@ defmodule TodoishWeb.Live do
     case create_list_from_form(form) do
       {:ok, result} ->
         list = %{result | items: []}
+
+        TodoishWeb.Endpoint.subscribe("item:list:#{list.id}")
 
         socket =
           socket

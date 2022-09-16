@@ -42,6 +42,7 @@ defmodule TodoishWeb.Live.List do
         </phx-form>
         <share-button url={"https://www.todoi.sh/#{@list.url_id}"} />
       </list-panel>
+      <save-button url-id={@list.url_id} title={@list.title} />
       <spacer />
     </app-body>
     """
