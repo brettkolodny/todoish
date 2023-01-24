@@ -1,18 +1,29 @@
 # Todoish
 
-To start your Phoenix server:
+![Todoish](https://user-images.githubusercontent.com/22826580/214425030-58798d72-2d1a-43c3-8a06-cec5cf001029.jpg)
 
-  * Install dependencies with `mix deps.get`
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+A real time sharable todo-list! Built with Elixir, Phoenix, LiveView, and Ash.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Check out [Todoish live](https://todoi.sh/)!
 
-## Learn more
+---
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+## Development
+
+1. Install Deps
+
+```sh
+mix deps.get
+```
+
+2. Setup Postgres on port `5455`
+3. Setup DB
+```sh
+mix ash_postgres.create
+mix ash_postgres.migrate
+```
+
+## Deploy
+
+An instance of Todoish can be set up on fly from [this tutorial](https://fly.io/docs/elixir/).
