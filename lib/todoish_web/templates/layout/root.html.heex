@@ -12,12 +12,26 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
   <body class="flex flex-col bg-base-50 min-h-screen">
-    <header class="flex justify-center items-center w-screen">
-      <section class="w-full max-w-xs md:max-w-5xl py-4">
+    <header class="absolute flex flex-row justify-center items-center w-screen">
+      <section class="flex flex-row justify-between items-center w-full max-w-xs md:max-w-5xl py-4">
         <a href="/" class="flex flex-row justify-start items-center">
           <div class="font-bold text-2xl md:text-4xl text-base-900">Todoish</div>
           <div class="text-xs md:text-base transform -translate-y-2">✅</div>
         </a>
+        <div class="flex flex-row gap-4 justify-end items-center">
+          <%= if @current_user do %>
+            <a href="/sign-out">Sign out</a>
+            <a href="/profile" class="flex justify-center items-center w-8 h-8 uppercase rounded-full bg-zinc-800 text-white">
+              <%=
+                @current_user.email
+                |> Ash.CiString.value()
+                |> String.first()
+              %>
+            </a>
+          <% else %>
+            <a href="/sign-in">Sign in</a>
+          <% end %>
+        </div>
       </section>
     </header>
     <%= @inner_content %>

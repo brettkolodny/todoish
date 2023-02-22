@@ -1,5 +1,6 @@
 defmodule TodoishWeb.Router do
   use TodoishWeb, :router
+  use AshAuthentication.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,18 +9,27 @@ defmodule TodoishWeb.Router do
     plug :put_root_layout, {TodoishWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :load_from_session
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :load_from_bearer
   end
 
   scope "/", TodoishWeb do
     pipe_through :browser
 
     get "/", PageController, :index
-
     post "/", PageController, :new
+
+    get "/profile", ProfileController, :profile
+    post "/profile/:list_id", ProfileController, :remove_list
+
+    sign_in_route()
+    sign_out_route AuthController
+    auth_routes_for Todoish.Entries.User, to: AuthController
+    reset_route []
 
     live "/:url_id", Live.List
   end

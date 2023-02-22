@@ -42,26 +42,32 @@ defmodule Todoish.EntriesServer do
     {:noreply, state}
   end
 
-  defp delete_list_and_items(_list, _delay \\ 0) do
-    :pass
-    # :timer.sleep(delay)
+  defp delete_list_and_items(list, delay \\ 0) do
+    # :pass
+    :timer.sleep(delay)
 
-    # list =
-    #   Todoish.Entries.List
-    #   |> Ash.Query.filter(id == ^list.id)
-    #   |> Ash.Query.limit(1)
-    #   |> Ash.Query.select([])
-    #   |> Ash.Query.load(items: Ash.Query.select(Todoish.Entries.Item, [:id]))
-    #   |> Todoish.Entries.read_one!()
+    list =
+      Todoish.Entries.List
+      |> Ash.Query.filter(id == ^list.id)
+      |> Ash.Query.limit(1)
+      |> Ash.Query.select([])
+      |> Ash.Query.load(items: Ash.Query.select(Todoish.Entries.Item, [:id]))
+      |> Todoish.Entries.read_one!()
 
-    # for item <- list.items do
-    #   item
-    #   |> Ash.Changeset.for_destroy(:destroy)
-    #   |> Todoish.Entries.destroy!()
-    # end
+    # user_lists =
+    #  Todoish.Entries.List
+    #  |> Ash.Query.filter(list_id == ^list.id)
+    #  |> Ash.Query.select([])
+    #  |> Todoish.Entries.read!()
 
-    # list
-    # |> Ash.Changeset.for_destroy(:destroy)
-    # |> Todoish.Entries.destroy!()
+    for item <- list.items do
+      item
+      |> Ash.Changeset.for_destroy(:destroy)
+      |> Todoish.Entries.destroy!()
+    end
+
+    list
+    |> Ash.Changeset.for_destroy(:destroy)
+    |> Todoish.Entries.destroy!()
   end
 end

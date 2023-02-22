@@ -1,0 +1,51 @@
+<section class="flex flex-col justify-center items-center mt-32 w-screen">
+  <div class="grid grid-rows-4 grid-cols-1 md:grid-cols-4 gap-y-10 md:gap-10 w-full max-w-sm md:max-w-4xl">
+    <div class="flex flex-col justify-center items-center md:gap-4 py-6 border border-base-200 rounded-md w-full">
+      <div class="flex justify-center items-center self-center w-12 h-12 bg-zinc-800 rounded-full uppercase text-2xl text-white">
+        <%=
+          @current_user.email
+          |> Ash.CiString.value()
+          |> String.first()
+        %>
+      </div>
+      <div><%= @current_user.email %></div>
+      <a href="/sign-out" class="underline text-primary-500">Sign out</a>
+    </div>
+    <div class="flex flex-col gap-2 col-span-2">
+      <h1 class="text-2xl md:text-4xl font-semibold text-base-900">Saved Lists</h1>
+      <div class="flex flex-col gap-2">
+        <%= for list <- @lists do %>
+          <div class="flex flex-row justify-between">
+            <div class="flex flex-col">
+              <a href={"/#{list.url_id}"} class="underline text-primary-400 text-lg md:text-2xl"><%= list.title %></a>
+              <div class="text-md md:text-base text-base-900">
+                <%= if String.length(list.description) < 24 do %>
+                  <%= list.description %>
+                <% else %>
+                  <%= String.slice(list.description, 0, 24) <> "..." %>
+                <% end %>
+              </div>
+              <div class="text-sm md:text-base text-base-600">
+                <span>Deleting in </span>
+                <span>
+                  ~<%=
+                  seven_days = 604_800_000
+                  one_day = 86_400_000
+                  now = DateTime.utc_now() |> DateTime.to_unix()
+                  inserted_date = list.inserted_at
+                  inserted_unix = DateTime.to_unix(inserted_date)
+                  now_unix = DateTime.utc_now() |> DateTime.to_unix()
+                  Float.round((seven_days - (now_unix - inserted_unix)) / one_day) |> trunc()
+                  %> days
+                </span>
+              </div>
+            </div>
+            <%= form_for @conn, Routes.profile_path(@conn, :remove_list, list.id), [], fn f-> %>
+              <button>🗑️</button>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

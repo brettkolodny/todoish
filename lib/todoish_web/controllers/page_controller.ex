@@ -33,7 +33,14 @@ defmodule TodoishWeb.PageController do
     |> AshPhoenix.Form.submit()
     |> case do
       {:ok, result} ->
-        IO.inspect(result)
+        if conn.assigns.current_user do
+          user = conn.assigns.current_user
+
+          Todoish.Entries.UsersLists
+          |> Ash.Changeset.for_create(:new, %{list_id: result.id, user_id: user.id})
+          |> Todoish.Entries.create!()
+        end
+
         redirect(conn, to: "/#{result.url_id}")
 
       {:error, form} ->

@@ -1,13 +1,14 @@
 // See the Tailwind configuration guide for advanced usage
 // https://tailwindcss.com/docs/configuration
 
-let plugin = require('tailwindcss/plugin')
+let plugin = require("tailwindcss/plugin");
 
 module.exports = {
   content: [
-    './js/**/*.js',
-    '../lib/*_web.ex',
-    '../lib/*_web/**/*.*ex',
+    "./js/**/*.js",
+    "../lib/*_web.ex",
+    "../lib/*_web/**/*.*ex",
+    "../deps/ash_authentication_phoenix/**/*.ex",
   ],
   theme: {
     extend: {
@@ -22,7 +23,7 @@ module.exports = {
           600: "#52606D",
           700: "3E4C59",
           800: "#323F4B",
-          900: "#1F2933"
+          900: "#1F2933",
         },
         primary: {
           50: "#E3F9E5",
@@ -34,16 +35,33 @@ module.exports = {
           600: "#0F8613",
           700: "#0E7817",
           800: "#07600E",
-          900: "#014807"
-        }
-      }
+          900: "#014807",
+        },
+      },
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
-    plugin(({addVariant}) => addVariant('phx-no-feedback', ['&.phx-no-feedback', '.phx-no-feedback &'])),
-    plugin(({addVariant}) => addVariant('phx-click-loading', ['&.phx-click-loading', '.phx-click-loading &'])),
-    plugin(({addVariant}) => addVariant('phx-submit-loading', ['&.phx-submit-loading', '.phx-submit-loading &'])),
-    plugin(({addVariant}) => addVariant('phx-change-loading', ['&.phx-change-loading', '.phx-change-loading &']))
-  ]
-}
+    require("@tailwindcss/forms"),
+    plugin(({ addVariant }) =>
+      addVariant("phx-no-feedback", ["&.phx-no-feedback", ".phx-no-feedback &"])
+    ),
+    plugin(({ addVariant }) =>
+      addVariant("phx-click-loading", [
+        "&.phx-click-loading",
+        ".phx-click-loading &",
+      ])
+    ),
+    plugin(({ addVariant }) =>
+      addVariant("phx-submit-loading", [
+        "&.phx-submit-loading",
+        ".phx-submit-loading &",
+      ])
+    ),
+    plugin(({ addVariant }) =>
+      addVariant("phx-change-loading", [
+        "&.phx-change-loading",
+        ".phx-change-loading &",
+      ])
+    ),
+  ],
+};
