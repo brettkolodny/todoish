@@ -22,7 +22,10 @@ defmodule Todoish.Entries.User do
       enabled?(true)
       token_resource(Todoish.Entries.Token)
 
-      signing_secret(Application.compile_env(:todoish, TodoishWeb.Endpoint)[:secret_key_base])
+      signing_secret(fn _, _ ->
+        {:ok, env} = Application.fetch_env(:todoish, TodoishWeb.Endpoint)
+        {:ok, env[:secret_key_base]}
+      end)
     end
   end
 
