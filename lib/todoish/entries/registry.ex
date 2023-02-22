@@ -6,5 +6,6 @@ defmodule Todoish.Entries.Registry do
     entry Todoish.Entries.Item
     entry Todoish.Entries.User
     entry Todoish.Entries.Token
+    entry Todoish.Entries.UsersLists
   end
 end

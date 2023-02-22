@@ -21,8 +21,10 @@ defmodule TodoishWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-
     post "/", PageController, :new
+
+    get "/profile", ProfileController, :profile
+    post "/profile/:list_id", ProfileController, :remove_list
 
     sign_in_route()
     sign_out_route AuthController

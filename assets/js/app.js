@@ -32,7 +32,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
 });
 
-window.addEventListener("phx:share", (e) => {
+window.addEventListener("phx:share", () => {
   const element = document.getElementById("share-button");
 
   if (navigator.share) {
@@ -62,6 +62,18 @@ window.addEventListener("phx:share", (e) => {
         element.innerText = "Share this list!";
       }, 1000);
     }
+  }
+});
+
+window.addEventListener("phx:save-list", () => {
+  const element = document.getElementById("save-list-button");
+
+  if (element) {
+    element.innerText = "List saved!";
+
+    setTimeout(() => {
+      element.innerText = "Save list";
+    }, 1000);
   }
 });
 

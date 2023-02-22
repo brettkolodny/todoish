@@ -26,6 +26,18 @@ defmodule Todoish.Entries.User do
     end
   end
 
+  actions do
+    defaults [:read]
+  end
+
+  relationships do
+    many_to_many :lists, Todoish.Entries.List do
+      through Todoish.Entries.UsersLists
+      source_attribute_on_join_resource :user_id
+      destination_attribute_on_join_resource :list_id
+    end
+  end
+
   postgres do
     table "users"
     repo Todoish.Repo

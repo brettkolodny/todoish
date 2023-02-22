@@ -6,7 +6,7 @@ defmodule TodoishWeb.Live.List do
 
   def render(assigns) do
     ~L"""
-    <div class="flex flex-col justify-center items-center gap-6 w-screen mt-4">
+    <div class="flex flex-col justify-center items-center gap-6 w-screen mt-32">
     	<div class="flex flex-col justify-center items-center gap-1 md:gap-2">
     		<h1 class="flex flex-row justify-start items-center">
     				<div class="font-bold text-3xl md:text-6xl text-base-900"><%= @list.title %></div>
@@ -34,7 +34,7 @@ defmodule TodoishWeb.Live.List do
     		<% end %>
     		<%= f = form_for @form, "#", [phx_submit: :save, phx_change: :validate, class: "flex flex-row justify-center w-full gap-2"] %>
     			<%= submit "➕", [class: ["w-6 text-xl"]] %>
-    			<%= text_input f, :title, [id: "new-todo", placeholder: "More pizza!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
+    			<%= text_input f, :title, [id: "new-todo", placeholder: "New item!", class: ["w-56 md:w-96 h-12 text-sm md:text-base rounded-md bg-base-100"]] %>
     			<div class="flex justify-center items-center w-6"></div>
     		</form>
     		<div class="mb-8">
@@ -44,11 +44,27 @@ defmodule TodoishWeb.Live.List do
     		</div>
     		<div phx-click="share" id="share-button" class="flex justify-center items-center w-56 md:w-96 bg-primary-400 text-white h-12 text-base md:text-lg rounded-md hover:bg-primary-500 transition-colors cursor-pointer">Share this list!</div>
     	</div>
+      <div class="w-40">
+        <%= if @user_id do %>
+          <button id="save-list-button" phx-click="save-list" class="bg-primary-500 px-6 py-2 rounded-md text-white hover:bg-primary-600 transition-colors w-full">Save list</button>
+        <% else %>
+          <a href="/sign-in" class="bg-primary-500 px-6 py-2 rounded-md text-white hover:bg-primary-600 transition-colors w-full">Sign in to save</a>
+        <% end %>
+      </div>
     </div>
     """
   end
 
-  def mount(%{"url_id" => url_id}, _sessions, socket) do
+  def mount(%{"url_id" => url_id}, sessions, socket) do
+    user_id =
+      if sessions["user"] do
+        sessions["user"]
+        |> URI.decode_query()
+        |> Map.get("user?id")
+      else
+        nil
+      end
+
     list =
       Todoish.Entries.List
       |> Ash.Query.filter(url_id == ^url_id)
@@ -72,6 +88,7 @@ defmodule TodoishWeb.Live.List do
         |> assign(:list, list)
         |> assign(:form, form)
         |> assign(:page_title, list.title)
+        |> assign(:user_id, user_id)
 
       {:ok, socket}
     else
@@ -104,6 +121,35 @@ defmodule TodoishWeb.Live.List do
           |> assign(error: "Make sure to put something todo 👆")
 
         {:noreply, socket}
+    end
+  end
+
+  def handle_event("save-list", _from, socket) do
+    if socket.assigns.user_id do
+      user_id = socket.assigns.user_id
+      list_id = socket.assigns.list.id
+
+      user =
+        Todoish.Entries.User
+        |> Ash.Query.filter(id == ^user_id)
+        |> Ash.Query.limit(1)
+        |> Ash.Query.select([])
+        |> Ash.Query.load(:lists)
+        |> Todoish.Entries.read_one!()
+
+      case Enum.find(user.lists, fn l -> l.id == list_id end) do
+        nil ->
+          Todoish.Entries.UsersLists
+          |> Ash.Changeset.for_create(:new, %{list_id: list_id, user_id: user_id})
+          |> Todoish.Entries.create!()
+
+          {:noreply, push_event(socket, "save-list", %{})}
+
+        _ ->
+          {:noreply, push_event(socket, "save-list", %{})}
+      end
+    else
+      {:noreply, socket}
     end
   end
 
